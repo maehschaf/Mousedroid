@@ -94,7 +94,7 @@ class BluetoothConnection(
                             // Host turned off or went out of range after the connection
                             // was established. Instant disconnect
                             Log.d("Mousedroid", "Active session lost. Disconnecting instantly.")
-                            listener.onDisconnected(Mode.BLUETOOTH, hostname)
+                            listener.onDisconnected(Mode.BLUETOOTH, hostname, true)
                             connectionEstablished = false
                         } else {
                             // Connection failed

@@ -45,6 +45,7 @@ class TCPConnection(
             thread = Thread { startReceiveBytesLoop() }
             thread.start()
         } catch (e: Exception) {
+            Log.e(TAG, e.toString())
             throw ConnectionFailedException("$ipAddress:$port")
         }
     }
@@ -76,7 +77,9 @@ class TCPConnection(
                 }
                 listener.onBytesReceived(buf, bytes ?: 0)
             } catch (e: Exception) {
-                Log.e(TAG, "Error while reading. Closing socket. ${e.message}")
+                if (running.get()) {
+                    Log.e(TAG, "Error while reading. Closing socket. ${e.message}")
+                }
                 onDisconnected()
                 break
             }
@@ -92,6 +95,6 @@ class TCPConnection(
     private fun onDisconnected() {
         val host = socket.inetAddress.hostAddress ?: "x.x.x.x"
         val mode = if (host == "127.0.0.1") Mode.USB else Mode.WIFI
-        listener.onDisconnected(mode, host)
+        listener.onDisconnected(mode, host, running.get())
     }
 }

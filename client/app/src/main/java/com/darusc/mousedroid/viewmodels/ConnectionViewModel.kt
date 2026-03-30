@@ -3,9 +3,12 @@ package com.darusc.mousedroid.viewmodels
 import android.Manifest
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.darusc.mousedroid.getDeviceDetails
 import com.darusc.mousedroid.networking.Connection
@@ -17,7 +20,7 @@ import kotlinx.coroutines.launch
 
 class ConnectionViewModel :
     BaseViewModel<ConnectionViewModel.State, ConnectionViewModel.Event>(State.Idle),
-    ConnectionManager.ConnectionStateCallback {
+    ConnectionManager.ConnectionStateCallback, DefaultLifecycleObserver {
 
     sealed class State : BaseViewModel.State() {
         object Idle : State()
@@ -34,8 +37,10 @@ class ConnectionViewModel :
         object EnableBluetooth : Event()
 
         data class ConnectionFailed(val connectionMode: Connection.Mode) : Event()
-        data class ConnectionDisconnected(val connectionMode: Connection.Mode, val hostName: String) : Event()
+        data class ConnectionDisconnected(val connectionMode: Connection.Mode, val hostName: String, val error: Boolean) : Event()
     }
+
+    private val TAG = "Mousedroid"
 
     private val connectionManager = ConnectionManager.getInstance(this)
 
@@ -55,11 +60,21 @@ class ConnectionViewModel :
         sendEvent(Event.ConnectionFailed(connectionMode))
     }
 
-    override fun onDisconnected(connectionMode: Connection.Mode, hostName: String) {
+    override fun onDisconnected(connectionMode: Connection.Mode, hostName: String, error: Boolean) {
         // Hardware link was lost (e.g host device's bluetooth was turned off)
         setState(State.Idle)
-        sendEvent(Event.ConnectionDisconnected(connectionMode, hostName))
+        sendEvent(Event.ConnectionDisconnected(connectionMode, hostName, error))
         sendEvent(Event.NavigateToMain)
+    }
+
+    override fun onStart(owner: LifecycleOwner) {
+        Log.i(TAG, "Resuming Connection.")
+        connectionManager.resume()
+    }
+
+    override fun onStop(owner: LifecycleOwner) {
+        Log.i(TAG, "Pausing Connection...")
+        connectionManager.pause()
     }
 
     /**

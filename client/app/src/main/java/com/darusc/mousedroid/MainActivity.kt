@@ -13,7 +13,9 @@ import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.darusc.mousedroid.networking.bluetooth.BluetoothAdapterWrapper
+import com.darusc.mousedroid.viewmodels.ConnectionViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -31,6 +33,9 @@ class MainActivity : AppCompatActivity() {
 
         BluetoothAdapterWrapper.initialize(applicationContext)
         //BatteryMonitor.getInstance().start(applicationContext)
+
+        val connectionViewModel = ViewModelProvider(this)[ConnectionViewModel::class.java]
+        lifecycle.addObserver(connectionViewModel);
     }
 
     override fun onRequestPermissionsResult(

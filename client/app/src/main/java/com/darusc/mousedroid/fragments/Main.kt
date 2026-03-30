@@ -117,7 +117,7 @@ class Main : Fragment() {
 
                             is ConnectionViewModel.Event.NavigateToMain -> {}
 
-                            is ConnectionViewModel.Event.ConnectionDisconnected -> {
+                            is ConnectionViewModel.Event.ConnectionDisconnected -> if(it.error) {
                                 val pview = showPopupDialog(R.layout.connection_disconnected_fragment)
                                 pview?.apply {
                                     if(it.connectionMode == Connection.Mode.BLUETOOTH) {

@@ -133,7 +133,7 @@ class Input: Fragment() {
                         when(it) {
                             is ConnectionViewModel.Event.NavigateToInput -> { }
                             is ConnectionViewModel.Event.NavigateToMain -> findNavController().popBackStack(R.id.mainFragment, false)
-                            is ConnectionViewModel.Event.ConnectionDisconnected -> {
+                            is ConnectionViewModel.Event.ConnectionDisconnected -> if (it.error) {
                                 val pview = showPopupDialog(R.layout.connection_disconnected_fragment)
                                 pview?.apply {
                                     if(it.connectionMode == Connection.Mode.BLUETOOTH) {
@@ -215,6 +215,6 @@ class Input: Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        connectionViewModel.disconnect()
+        // connectionViewModel.disconnect()
     }
 }

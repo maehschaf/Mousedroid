@@ -136,7 +136,7 @@ class DeviceList : Fragment() {
                         when(it) {
                             is ConnectionViewModel.Event.NavigateToInput -> findNavController().navigate(R.id.action_devicelist_to_touchpad)
                             is ConnectionViewModel.Event.NavigateToMain -> findNavController().popBackStack(R.id.mainFragment, false)
-                            is ConnectionViewModel.Event.ConnectionDisconnected -> showPopupDialog(R.layout.connection_disconnected_fragment)
+                            is ConnectionViewModel.Event.ConnectionDisconnected -> if (it.error) showPopupDialog(R.layout.connection_disconnected_fragment)
                             is ConnectionViewModel.Event.ConnectionFailed -> showPopupDialog(R.layout.connection_failed_fragment)
                             else -> { }
                         }

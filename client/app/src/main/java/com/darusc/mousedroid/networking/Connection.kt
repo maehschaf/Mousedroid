@@ -19,7 +19,7 @@ abstract class Connection {
         fun onConnected(connectionMode: Mode, hostName: String)
         fun onConnectionFailed(connectionMode: Mode)
         fun onBytesReceived(buffer: ByteArray, bytes: Int)
-        fun onDisconnected(connectionMode: Mode, hostName: String)
+        fun onDisconnected(connectionMode: Mode, hostName: String, error: Boolean)
     }
 
     abstract fun send(event: InputEvent)
