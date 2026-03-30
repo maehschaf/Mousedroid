@@ -36,6 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:paddingBottom="8dp"
             android:visibility="gone"
             app:chipSpacingHorizontal="18dp"
             app:chipSpacingVertical="18dp"
@@ -124,9 +125,9 @@
                 android:background="@drawable/rounded_control"
                 android:onClick="@{viewmodel::onMediaButtonClick}"
                 android:src="@drawable/ic_volume_up"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:tint="@color/white"
-                tools:layout_editor_absoluteX="343dp"
-                tools:layout_editor_absoluteY="4dp" />
+                tools:layout_editor_absoluteX="343dp" />
 
             <ImageButton
                 android:id="@+id/btnVolOff"
