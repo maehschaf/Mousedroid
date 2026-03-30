@@ -55,6 +55,12 @@ class Touchpad : Fragment() {
             )
         }
 
+        binding.btnKeyboard.setOnClickListener {
+            val input = parentFragment as? Input
+
+            input?.openSoftKeyboard()
+        }
+
         // Touchpad fullscreen toggle
         binding.btnFullscreen.setOnClickListener {
             val currentOrientation = requireActivity().requestedOrientation
@@ -95,28 +101,23 @@ class Touchpad : Fragment() {
             params.setMargins(0, 0, 0, 0)
 
             // Remove all other buttons
-            binding.title.visibility = View.GONE
-            binding.mouseButtonsRow.visibility = View.GONE
             binding.btnToggleMedia.visibility = View.GONE
             binding.mediaControls.visibility = View.GONE
-            binding.btnFullscreen.setIconResource(R.drawable.ic_fullscreen_exit)
+            binding.btnFullscreen.setImageResource(R.drawable.ic_fullscreen_exit)
         } else {
             rootLayout.setPadding(rootPaddingPx, rootPaddingPx, rootPaddingPx, rootPaddingPx)
 
             // Set the layout params for portrait mode
             params.topToBottom = R.id.title
-            params.bottomToTop = R.id.mouseButtonsRow
             params.startToStart = ConstraintLayout.LayoutParams.PARENT_ID
             params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID
             params.topMargin = marginTopPx
             params.bottomMargin = marginBottomPx
 
             // Make everything else visible again
-            binding.title.visibility = View.VISIBLE
-            binding.mouseButtonsRow.visibility = View.VISIBLE
             binding.btnToggleMedia.visibility = View.VISIBLE
             binding.mediaControls.visibility = View.VISIBLE
-            binding.btnFullscreen.setIconResource(R.drawable.ic_fullscreen)
+            binding.btnFullscreen.setImageResource(R.drawable.ic_fullscreen)
         }
 
         container.layoutParams = params
