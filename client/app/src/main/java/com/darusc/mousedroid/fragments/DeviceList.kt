@@ -39,6 +39,9 @@ import kotlinx.coroutines.launch
 
 class DeviceList : Fragment() {
 
+    private final val ValidIpAddressRegex = "^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$";
+    private final val ValidHostnameRegex = "^(([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9\\-]*[a-zA-Z0-9])\\.)*([A-Za-z0-9]|[A-Za-z0-9][A-Za-z0-9\\-]*[A-Za-z0-9])$";
+
     private lateinit var binding: FragmentDeviceListBinding
     private lateinit var loadingPopup: PopupWindow
 
@@ -183,8 +186,7 @@ class DeviceList : Fragment() {
 
         address.addTextChangedListener {
             val ip = it?.toString()
-            deviceAddBtn.isEnabled =
-                ip?.matches(Regex("^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\$")) ?: false
+            deviceAddBtn.isEnabled = ip != null && (ip.matches(Regex(ValidHostnameRegex)) || ip.matches(Regex(ValidIpAddressRegex)))
         }
 
         deviceAddBtn.setOnClickListener {
