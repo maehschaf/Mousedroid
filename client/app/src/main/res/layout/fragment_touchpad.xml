@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="viewmodel"
             type="com.darusc.mousedroid.viewmodels.TouchpadViewModel" />
@@ -12,89 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bg_dark"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Touchpad"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <FrameLayout
-            android:id="@+id/touchpadContainer"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/touchpad_bg"
-            app:layout_constraintBottom_toTopOf="@+id/mouseButtonsRow"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnFullscreen"
-                style="@style/Widget.MaterialComponents.Button.Icon"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="top|end"
-                android:layout_margin="12dp"
-                android:backgroundTint="#00000000"
-                app:icon="@drawable/ic_fullscreen"
-                app:iconGravity="textStart"
-                app:iconPadding="0dp"
-                app:iconTint="@color/white"
-                app:shapeAppearanceOverlay="@style/ShapeAppearance.MaterialComponents.SmallComponent" />
-
-            <View
-                android:id="@+id/touchpadSensor"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:alpha="0.1" />
-        </FrameLayout>
-
-        <LinearLayout
-            android:id="@+id/mouseButtonsRow"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toTopOf="@+id/btnToggleMedia">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnLeftClick"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:onClick="@{viewmodel::onMouseButtonClick}"
-                android:text="Left" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnMiddleClick"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="4dp"
-                android:layout_weight="1"
-                android:onClick="@{viewmodel::onMouseButtonClick}"
-                android:text="Middle" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnRightClick"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="@{viewmodel::onMouseButtonClick}"
-                android:text="Right" />
-        </LinearLayout>
+        android:padding="0dp"
+        android:paddingTop="0dp">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnToggleMedia"
@@ -107,20 +27,40 @@
             app:iconGravity="textEnd"
             app:iconTint="#888888"
             app:layout_constraintBottom_toTopOf="@id/mediaControls"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.chip.ChipGroup
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/mediaControls"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp"
             android:gravity="center"
+            android:visibility="gone"
             app:chipSpacingHorizontal="18dp"
             app:chipSpacingVertical="18dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnToggleMedia"
             app:singleLine="false">
+
+            <androidx.constraintlayout.helper.widget.Flow
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:constraint_referenced_ids="btnPrev,btnPlayPause,btnNext,btnReplay10,btnForward10,btnVolUp,btnVolDown,btnVolOff"
+                app:flow_horizontalGap="8dp"
+                app:flow_horizontalStyle="packed"
+                app:flow_maxElementsWrap="5"
+                app:flow_verticalAlign="top"
+                app:flow_verticalGap="8dp"
+                app:flow_verticalStyle="packed"
+                app:flow_wrapMode="aligned"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageButton
                 android:id="@+id/btnPrev"
@@ -129,7 +69,9 @@
                 android:background="@drawable/rounded_control"
                 android:onClick="@{viewmodel::onMediaButtonClick}"
                 android:src="@drawable/ic_skip_previos"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                tools:layout_editor_absoluteX="42dp"
+                tools:layout_editor_absoluteY="8dp" />
 
             <ImageButton
                 android:id="@+id/btnPlayPause"
@@ -138,7 +80,9 @@
                 android:background="@drawable/rounded_control"
                 android:onClick="@{viewmodel::onMediaButtonClick}"
                 android:src="@drawable/ic_play_pause"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                tools:layout_editor_absoluteX="92dp"
+                tools:layout_editor_absoluteY="8dp" />
 
             <ImageButton
                 android:id="@+id/btnNext"
@@ -147,7 +91,9 @@
                 android:background="@drawable/rounded_control"
                 android:onClick="@{viewmodel::onMediaButtonClick}"
                 android:src="@drawable/ic_skip_next"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                tools:layout_editor_absoluteX="142dp"
+                tools:layout_editor_absoluteY="8dp" />
 
             <ImageButton
                 android:id="@+id/btnReplay10"
@@ -156,7 +102,9 @@
                 android:background="@drawable/rounded_control"
                 android:onClick="@{viewmodel::onMediaButtonClick}"
                 android:src="@drawable/ic_replay_10"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                tools:layout_editor_absoluteX="243dp"
+                tools:layout_editor_absoluteY="8dp" />
 
             <ImageButton
                 android:id="@+id/btnForward10"
@@ -165,31 +113,9 @@
                 android:background="@drawable/rounded_control"
                 android:onClick="@{viewmodel::onMediaButtonClick}"
                 android:src="@drawable/ic_forward_10"
-                app:tint="@color/white" />
-
-            <ImageButton
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/rounded_control"
-                app:tint="@color/white" />
-
-            <ImageButton
-                android:id="@+id/btnVolDown"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/rounded_control"
-                android:onClick="@{viewmodel::onMediaButtonClick}"
-                android:src="@drawable/ic_volume_down"
-                app:tint="@color/white" />
-
-            <ImageButton
-                android:id="@+id/btnVolOff"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:background="@drawable/rounded_control"
-                android:onClick="@{viewmodel::onMediaButtonClick}"
-                android:src="@drawable/ic_volume_off"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                tools:layout_editor_absoluteX="293dp"
+                tools:layout_editor_absoluteY="8dp" />
 
             <ImageButton
                 android:id="@+id/btnVolUp"
@@ -198,15 +124,74 @@
                 android:background="@drawable/rounded_control"
                 android:onClick="@{viewmodel::onMediaButtonClick}"
                 android:src="@drawable/ic_volume_up"
-                app:tint="@color/white" />
+                app:tint="@color/white"
+                tools:layout_editor_absoluteX="343dp"
+                tools:layout_editor_absoluteY="4dp" />
 
             <ImageButton
+                android:id="@+id/btnVolOff"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:background="@drawable/rounded_control"
+                android:onClick="@{viewmodel::onMediaButtonClick}"
+                android:src="@drawable/ic_volume_off"
+                app:tint="@color/white"
+                tools:layout_editor_absoluteX="393dp" />
+
+            <ImageButton
+                android:id="@+id/btnVolDown"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/rounded_control"
+                android:onClick="@{viewmodel::onMediaButtonClick}"
+                android:src="@drawable/ic_volume_down"
+                app:tint="@color/white"
+                tools:layout_editor_absoluteX="443dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/touchpadContainer"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@drawable/touchpad_bg"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/mediaControls">
+
+            <View
+                android:id="@+id/touchpadSensor"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:alpha="0.1" />
+
+            <ImageButton
+                android:id="@+id/btnFullscreen"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="top|end"
+                android:layout_margin="12dp"
+                android:backgroundTint="#00000000"
+                android:elevation="8dp"
+                android:src="@drawable/ic_fullscreen"
+                android:visibility="gone" />
+
+            <ImageButton
+                android:id="@+id/btnKeyboard"
+                style="@style/Widget.AppCompat.ImageButton"
+                android:layout_width="64dp"
+                android:layout_height="48dp"
+                android:layout_gravity="bottom|center_horizontal"
+                android:layout_margin="12dp"
+                android:background="@drawable/rounded_control"
+                android:contentDescription="keyboard"
+                android:elevation="8dp"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_baseline_keyboard_24"
                 app:tint="@color/white" />
 
-        </com.google.android.material.chip.ChipGroup>
+        </FrameLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

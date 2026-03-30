@@ -1,16 +1,12 @@
 package com.darusc.mousedroid.fragments
 
 import android.content.Context
-import android.inputmethodservice.InputMethodService
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
-import androidx.annotation.RequiresApi
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -27,7 +23,6 @@ import com.darusc.mousedroid.mkinput.KeyboardInputWatcher
 import com.darusc.mousedroid.networking.Connection
 import com.darusc.mousedroid.viewmodels.ConnectionViewModel
 import com.darusc.mousedroid.viewmodels.KeyboardViewModel
-import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import kotlinx.coroutines.launch
 
 /**
@@ -35,6 +30,8 @@ import kotlinx.coroutines.launch
  * is happening inside this fragment
  */
 class Input: Fragment() {
+
+    private val TAG = "Mousedroid"
 
     private lateinit var binding: FragmentInputBinding
 
@@ -76,36 +73,17 @@ class Input: Fragment() {
             insets
         }
 
-        // Set navigation listener for the side drawer
-        binding.navigation.setCheckedItem(R.id.mode_touchpad)
+        replaceChildFragment(Touchpad())
+
         binding.btnOpenDrawer.setOnClickListener {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
         binding.navigation.setNavigationItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.mode_touchpad -> {
-                    item.isChecked = true
-                    closeSoftKeyboard()
-                    replaceChildFragment(Touchpad())
-                }
-                R.id.mode_numpad -> {
-                    item.isChecked = true
-                    closeSoftKeyboard()
-                    replaceChildFragment(Numpad())
-                }
-                R.id.mode_keyboard -> {
-                    binding.drawerLayout.closeDrawer(GravityCompat.START)
-                    openSoftKeyboard()
-                    return@setNavigationItemSelectedListener true
-                }
                 R.id.mode_disconnect -> {
                     closeSoftKeyboard()
                     connectionViewModel.disconnect()
                     findNavController().navigateUp()
-                }
-                R.id.mode_change_layout -> {
-                    showLayoutSelectorDialog(item)
-                    return@setNavigationItemSelectedListener true
                 }
             }
             binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -172,33 +150,7 @@ class Input: Fragment() {
             .commit()
     }
 
-    private fun showLayoutSelectorDialog(menuItem: MenuItem) {
-        val layouts = keyboardViewModel.layouts.toTypedArray()
-
-        val currentLayoutIndex = layouts.indexOf(keyboardViewModel.activeKeyboardLayout.name)
-
-        MaterialAlertDialogBuilder(requireContext())
-            .setTitle("Select Keyboard Layout")
-            .setSingleChoiceItems(layouts, currentLayoutIndex) { dialog, which ->
-
-                val selectedLayoutName = layouts[which]
-                if (keyboardViewModel.setKeyboardLayout(selectedLayoutName)) {
-                    menuItem.title = "Layout: $selectedLayoutName"
-                } else {
-                    menuItem.title = "Layout"
-                }
-
-
-                dialog.dismiss()
-                binding.drawerLayout.closeDrawer(GravityCompat.START)
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
-    }
-
-    private fun openSoftKeyboard() {
+    fun openSoftKeyboard() {
         //binding.hiddenInput.isFocusable = true
         //binding.hiddenInput.isFocusableInTouchMode = true
         binding.hiddenInput.requestFocus()
@@ -207,7 +159,7 @@ class Input: Fragment() {
         imm.showSoftInput(binding.hiddenInput, InputMethodManager.SHOW_FORCED)
     }
 
-    private fun closeSoftKeyboard() {
+    fun closeSoftKeyboard() {
         val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view?.windowToken, 0)
         view?.clearFocus()

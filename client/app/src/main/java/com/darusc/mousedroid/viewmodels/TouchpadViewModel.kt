@@ -29,11 +29,11 @@ class TouchpadViewModel: BaseViewModel<TouchpadViewModel.State, TouchpadViewMode
         }
     }
 
-    fun onMouseButtonClick(view: View) {
-        when(view.id) {
-            R.id.btnLeftClick -> connectionManager.send(InputEvent.MouseClick(InputEvent.MouseButton.LEFT))
-            R.id.btnRightClick -> connectionManager.send(InputEvent.MouseClick(InputEvent.MouseButton.RIGHT))
-            R.id.btnMiddleClick -> connectionManager.send(InputEvent.MouseClick(InputEvent.MouseButton.MIDDLE))
-        }
-    }
+//    fun onMouseButtonClick(view: View) {
+//        when(view.id) {
+//            R.id.btnLeftClick -> connectionManager.send(InputEvent.MouseClick(InputEvent.MouseButton.LEFT))
+//            R.id.btnRightClick -> connectionManager.send(InputEvent.MouseClick(InputEvent.MouseButton.RIGHT))
+//            R.id.btnMiddleClick -> connectionManager.send(InputEvent.MouseClick(InputEvent.MouseButton.MIDDLE))
+//        }
+//    }
 }
