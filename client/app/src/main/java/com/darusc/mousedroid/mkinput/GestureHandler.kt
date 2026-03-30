@@ -2,6 +2,7 @@ package com.darusc.mousedroid.mkinput
 
 import android.content.Context
 import android.os.Looper
+import android.util.Log
 import android.view.*
 import androidx.core.view.GestureDetectorCompat
 import com.darusc.mousedroid.networking.ConnectionManager
@@ -181,6 +182,16 @@ class GestureHandler(
                 // Can't be detected in onSingleTapUp because the 2 pointers are not lifted at the same time
                 // so we don't get that event with 2 pointers but rather 2 different events with 1 pointer
                 sendInputCallback(InputEvent.MouseClick(InputEvent.MouseButton.RIGHT))
+            }
+        }
+
+        // 3 finger tap counts a middle click
+        if (p1?.actionMasked == MotionEvent.ACTION_POINTER_DOWN && p1.pointerCount == 3) {
+            // If we are scrolling we probably don't want to middle-click
+            if (System.currentTimeMillis() - state.lastScrolled > 500) {
+                // Middle click is detected when there are 3 pointers
+                Log.d(TAG, "This was a middle click!")
+                sendInputCallback(InputEvent.MouseClick(InputEvent.MouseButton.MIDDLE))
             }
         }
 
