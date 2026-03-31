@@ -112,7 +112,7 @@ class Main : Fragment() {
                             }
 
                             is ConnectionViewModel.Event.NavigateToDeviceList -> {
-                                findNavController().navigate(R.id.action_main_to_devicelist, bundleOf("CONNECTION_MODE" to it.mode))
+                                findNavController().navigate(R.id.action_main_to_devicelist, bundleOf("CONNECTION_MODE" to it.mode.toString()))
                             }
 
                             is ConnectionViewModel.Event.NavigateToMain -> {}
