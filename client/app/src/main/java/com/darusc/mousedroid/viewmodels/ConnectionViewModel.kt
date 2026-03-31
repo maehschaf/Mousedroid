@@ -58,6 +58,7 @@ class ConnectionViewModel :
     override fun onConnectionFailed(connectionMode: Connection.Mode) {
         setState(State.Idle)
         sendEvent(Event.ConnectionFailed(connectionMode))
+        sendEvent(Event.NavigateToMain)
     }
 
     override fun onDisconnected(connectionMode: Connection.Mode, hostName: String, error: Boolean) {

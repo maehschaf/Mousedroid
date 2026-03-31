@@ -179,14 +179,19 @@ class ConnectionManager private constructor() : Connection.Listener, BatteryMoni
     fun resume() {
         when (val info = connectionInfo) {
             is ConnectionInfo.WIFI -> connectWIFI(info.address, info.port, info.deviceDetails)
-            is ConnectionInfo.BLUETOOTH -> connectBluetooth(info.macAddress)
+            is ConnectionInfo.BLUETOOTH -> {}//connectBluetooth(info.macAddress)
             is ConnectionInfo.USB -> connectUSB(info.port, info.deviceDetails)
             ConnectionInfo.Disconnected -> Log.d(TAG, "Tried to resume connection with no active connection")
         }
     }
 
     fun pause() {
-        disconnect(keepInfo = true)
+        when (val info = connectionInfo) {
+            is ConnectionInfo.WIFI -> disconnect(keepInfo = true)
+            is ConnectionInfo.USB -> disconnect(keepInfo = true)
+            is ConnectionInfo.BLUETOOTH -> return
+            else -> return
+        }
         Log.d(TAG, "Disconnected, stored connection info")
     }
 

@@ -20,6 +20,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -48,10 +49,10 @@ class DeviceList : Fragment() {
     private lateinit var deviceAdapter: DeviceAdapter
 
     private val connectionMode: Connection.Mode
-        get() = arguments?.getSerializable("CONNECTION_MODE") as Connection.Mode
+        get() = Connection.Mode.valueOf(arguments?.getString("CONNECTION_MODE")?: "WIFI")
 
     private val connectionViewModel: ConnectionViewModel by activityViewModels()
-    private val deviceListViewModel: DeviceListViewModel by activityViewModels {
+    private val deviceListViewModel: DeviceListViewModel by viewModels {
         if(connectionMode == Connection.Mode.BLUETOOTH) {
             val devices = BluetoothAdapterWrapper.getInstance()?.pairedDevices ?: emptySet()
             DeviceListViewModel.Factory(devices)
